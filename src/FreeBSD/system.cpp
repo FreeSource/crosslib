@@ -30,56 +30,59 @@
 #include <stdexcept>
 #include <sys/sysctl.h>
 
-using std::runtime_error;
-
-const string getExecutablePath() {
-    int mib[4];
-    mib[0] = CTL_KERN;
-    mib[1] = KERN_PROC;
-    mib[2] = KERN_PROC_PATHNAME;
-    mib[3] = -1;
-    char buffer[PATH_MAX];
-    size_t cb = sizeof( buffer );
+namespace socrs {
     
-    if( sysctl( mib, 4, buffer, &cb, NULL, 0 ) < 0 ) {
-        throw runtime_error( "FILE: " + string( __FILE__ ) + " FUNCTION: " + string( __PRETTY_FUNCTION__ ) + " -> " + "Can't get process executable path." );
-    }
-    return buffer;
-}
-
-const vector<string> getArguments() {
-    int mib[4];
-    mib[0] = CTL_KERN;
-    mib[1] = KERN_PROC;
-    mib[2] = KERN_PROC_ARGS;
-    mib[3] = getpid();
+    using std::runtime_error;
     
-    char arg[ARG_MAX];
-    size_t len;
-    len = sizeof( arg );
-    
-    if ( sysctl( mib, 4, arg, &len, NULL, 0 ) < 0 ) {
-        throw runtime_error( "FILE: " + string( __FILE__ ) + " FUNCTION: " + string( __PRETTY_FUNCTION__ ) + " -> " + "Can't get process arguments." );;
+    const string getExecutablePath() {
+        int mib[4];
+        mib[0] = CTL_KERN;
+        mib[1] = KERN_PROC;
+        mib[2] = KERN_PROC_PATHNAME;
+        mib[3] = -1;
+        char buffer[PATH_MAX];
+        size_t cb = sizeof( buffer );
+        
+        if( sysctl( mib, 4, buffer, &cb, NULL, 0 ) < 0 ) {
+            throw runtime_error( "FILE: " + string( __FILE__ ) + " FUNCTION: " + string( __PRETTY_FUNCTION__ ) + " -> " + "Can't get process executable path." );
+        }
+        return buffer;
     }
     
-    char *cp = arg;
-    cp += strlen( cp ) + 1;
-    vector<string> args;
-    while ( cp < arg + len ) {
-        args.push_back( cp );
+    const vector<string> getArguments() {
+        int mib[4];
+        mib[0] = CTL_KERN;
+        mib[1] = KERN_PROC;
+        mib[2] = KERN_PROC_ARGS;
+        mib[3] = getpid();
+        
+        char arg[ARG_MAX];
+        size_t len;
+        len = sizeof( arg );
+        
+        if ( sysctl( mib, 4, arg, &len, NULL, 0 ) < 0 ) {
+            throw runtime_error( "FILE: " + string( __FILE__ ) + " FUNCTION: " + string( __PRETTY_FUNCTION__ ) + " -> " + "Can't get process arguments." );;
+        }
+        
+        char *cp = arg;
         cp += strlen( cp ) + 1;
+        vector<string> args;
+        while ( cp < arg + len ) {
+            args.push_back( cp );
+            cp += strlen( cp ) + 1;
+        }
+        
+        return args;
     }
     
-    return args;
-}
-
-const string getCurrentDirectory() {
-    char currentDir[PATH_MAX];
-    
-    if ( getcwd( currentDir, PATH_MAX ) != NULL ) {
-        return currentDir;
-    }
-    else {
-        throw runtime_error( "FILE: " + string( __FILE__ ) + " FUNCTION: " + string( __PRETTY_FUNCTION__ ) + " -> " + "Can't get process current working directory." );
+    const string getCurrentDirectory() {
+        char currentDir[PATH_MAX];
+        
+        if ( getcwd( currentDir, PATH_MAX ) != NULL ) {
+            return currentDir;
+        }
+        else {
+            throw runtime_error( "FILE: " + string( __FILE__ ) + " FUNCTION: " + string( __PRETTY_FUNCTION__ ) + " -> " + "Can't get process current working directory." );
+        }
     }
 }

@@ -34,49 +34,52 @@
 #include <stdlib.h>
 #include <errno.h>
 
-using std::runtime_error;
-
-const string getExecutablePath() {
-    char path[PATH_MAX];
-    if ( realpath( program_invocation_name, path ) ) {
-        return path;
-    }
-    else {
-        throw runtime_error( "FILE: " + string( __FILE__ ) + " FUNCTION: " + string( __PRETTY_FUNCTION__ ) + " -> " + "Can't get process executable path." );
-    }
-}
-
-const vector<string> getArguments() {
-    FILE *cmdline = fopen( "/proc/self/cmdline", "rb" );
+namespace socrs {
     
-    if ( cmdline == NULL ) {
-        throw runtime_error( "FILE: " + string( __FILE__ ) + " FUNCTION: " + string( __PRETTY_FUNCTION__ ) + " -> " + "Can't get process arguments." );
+    using std::runtime_error;
+    
+    const string getExecutablePath() {
+        char path[PATH_MAX];
+        if ( realpath( program_invocation_name, path ) ) {
+            return path;
+        }
+        else {
+            throw runtime_error( "FILE: " + string( __FILE__ ) + " FUNCTION: " + string( __PRETTY_FUNCTION__ ) + " -> " + "Can't get process executable path." );
+        }
     }
     
-    char *arg = NULL;
-    size_t size = 0;
-    vector<string> args;
-    
-    while ( getdelim( &arg, &size, 0, cmdline ) != -1 ) {
-        args.push_back( arg );
+    const vector<string> getArguments() {
+        FILE *cmdline = fopen( "/proc/self/cmdline", "rb" );
+        
+        if ( cmdline == NULL ) {
+            throw runtime_error( "FILE: " + string( __FILE__ ) + " FUNCTION: " + string( __PRETTY_FUNCTION__ ) + " -> " + "Can't get process arguments." );
+        }
+        
+        char *arg = NULL;
+        size_t size = 0;
+        vector<string> args;
+        
+        while ( getdelim( &arg, &size, 0, cmdline ) != -1 ) {
+            args.push_back( arg );
+        }
+        
+        if ( arg != NULL ) {
+            free( arg );
+        }
+        
+        fclose( cmdline );
+        args.erase( args.begin() );
+        return args;
     }
     
-    if ( arg != NULL ) {
-        free( arg );
-    }
-    
-    fclose( cmdline );
-    args.erase( args.begin() );
-    return args;
-}
-
-const string getCurrentDirectory() {
-    char currentDir[PATH_MAX];
-    
-    if ( getcwd( currentDir, PATH_MAX ) != NULL ) {
-        return currentDir;
-    }
-    else {
-        throw runtime_error( "FILE: " + string( __FILE__ ) + " FUNCTION: " + string( __PRETTY_FUNCTION__ ) + " -> " + "Can't get process current working directory." );
+    const string getCurrentDirectory() {
+        char currentDir[PATH_MAX];
+        
+        if ( getcwd( currentDir, PATH_MAX ) != NULL ) {
+            return currentDir;
+        }
+        else {
+            throw runtime_error( "FILE: " + string( __FILE__ ) + " FUNCTION: " + string( __PRETTY_FUNCTION__ ) + " -> " + "Can't get process current working directory." );
+        }
     }
 }
