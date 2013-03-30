@@ -70,7 +70,7 @@ namespace {
     }
 }
 
-namespace socrs {
+namespace crosslib {
     
     const string getExecutablePath() {
         char pathbuf[PROC_PIDPATHINFO_MAXSIZE];

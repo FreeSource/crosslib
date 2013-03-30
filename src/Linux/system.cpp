@@ -34,7 +34,7 @@
 #include <stdlib.h>
 #include <errno.h>
 
-namespace socrs {
+namespace crosslib {
     
     using std::runtime_error;
     

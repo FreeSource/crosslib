@@ -103,7 +103,7 @@ namespace {
     }
 }
 
-namespace socrs {
+namespace crosslib {
     
     const string getExecutablePath() {
         char path[PATH_MAX];

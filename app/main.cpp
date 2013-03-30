@@ -31,7 +31,7 @@
 #include <cstdlib>
 #include <stdexcept>
 
-using namespace socrs;
+using namespace crosslib;
 
 using std::cout;
 using std::endl;

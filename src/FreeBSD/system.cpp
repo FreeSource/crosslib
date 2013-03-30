@@ -30,7 +30,7 @@
 #include <stdexcept>
 #include <sys/sysctl.h>
 
-namespace socrs {
+namespace crosslib {
     
     using std::runtime_error;
     

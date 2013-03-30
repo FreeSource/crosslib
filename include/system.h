@@ -30,7 +30,7 @@
 #include <string>
 #include <vector>
 
-namespace socrs {
+namespace crosslib {
     
     using std::string;
     using std::vector;
