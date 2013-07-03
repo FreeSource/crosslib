@@ -63,8 +63,7 @@ namespace {
             if ( pread( procFile, arguments, pinfo.pr_argc * sizeof( uintptr_t ), pinfo.pr_argv ) == -1 ) {
                 throw runtime_error( "FILE: " + string( __FILE__ ) + " FUNCTION: " + string( __PRETTY_FUNCTION__ ) + " -> " + "Can't get process address-space image." );
             }
-        }
-        else {
+        } else {
             caddr32_t *Argvec32 = ( caddr32_t * )arguments;
             if ( pread( procFile, Argvec32, pinfo.pr_argc * sizeof( caddr32_t ), pinfo.pr_argv ) == -1 ) {
                 throw runtime_error( "FILE: " + string( __FILE__ ) + " FUNCTION: " + string( __PRETTY_FUNCTION__ ) + " -> " + "Can't get process address-space image." );
@@ -109,8 +108,7 @@ namespace crosslib {
         char path[PATH_MAX];
         if ( realpath( getexecname(), path ) ) {
             return path;
-        }
-        else {
+        } else {
             throw runtime_error( "FILE: " + string( __FILE__ ) + " FUNCTION: " + string( __PRETTY_FUNCTION__ ) + " -> " + "Can't get process executable path." );
         }
     }
@@ -134,8 +132,7 @@ namespace crosslib {
         
         if ( getcwd( currentDir, PATH_MAX ) != NULL ) {
             return currentDir;
-        }
-        else {
+        } else {
             throw runtime_error( "FILE: " + string( __FILE__ ) + " FUNCTION: " + string( __PRETTY_FUNCTION__ ) + " -> " + "Can't get process current working directory." );
         }
     }

@@ -31,18 +31,18 @@
 #include <cstdlib>
 #include <stdexcept>
 
-using namespace crosslib;
-
-using std::cout;
-using std::endl;
-using std::runtime_error;
-
 int main() {
+    
+    using std::cout;
+    using std::endl;
+    using std::runtime_error;
+    using namespace crosslib;
+    
     try {
         cout << getExecutablePath() << endl;
         return EXIT_SUCCESS;
-    }
-    catch ( runtime_error &error ) {
+        
+    } catch ( runtime_error &error ) {
         // Custom user messages...
         
         // Log messages...

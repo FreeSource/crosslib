@@ -41,8 +41,7 @@ namespace crosslib {
         
         if ( bytes > 0 ) {
             return exepath;
-        }
-        else {
+        } else {
             throw runtime_error( "FILE: " + string( __FILE__ ) + " FUNCTION: " + string( __PRETTY_FUNCTION__ ) + " -> " + "Can't get process executable path." );
         }
     }
@@ -70,8 +69,7 @@ namespace crosslib {
         char currentDir[MAX_PATH];
         if ( GetCurrentDirectory( MAX_PATH, currentDir ) > 0 ) {
             return currentDir;
-        }
-        else {
+        } else {
             throw runtime_error( "FILE: " + string( __FILE__ ) + " FUNCTION: " + string( __PRETTY_FUNCTION__ ) + " -> " + "Can't get process current working directory." );
         }
     }

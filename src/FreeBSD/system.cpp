@@ -80,8 +80,7 @@ namespace crosslib {
         
         if ( getcwd( currentDir, PATH_MAX ) != NULL ) {
             return currentDir;
-        }
-        else {
+        } else {
             throw runtime_error( "FILE: " + string( __FILE__ ) + " FUNCTION: " + string( __PRETTY_FUNCTION__ ) + " -> " + "Can't get process current working directory." );
         }
     }
