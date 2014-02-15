@@ -121,7 +121,7 @@ namespace crosslib {
         uintptr_t *arguments = ( uintptr_t* )malloc( pinfo.pr_argc * sizeof ( uintptr_t ) );
         readArguments( procFile, arguments, pinfo );
         args = collectArguments( procFile, arguments, pinfo );
-
+        
         close( procFile );
         free( arguments );
         return args;

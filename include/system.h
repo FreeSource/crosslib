@@ -39,4 +39,5 @@ namespace crosslib {
     const vector<string> getArguments();
     const string getCurrentDirectory();
 }
+
 #endif
