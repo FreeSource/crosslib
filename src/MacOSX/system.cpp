@@ -27,6 +27,9 @@
 
 #include <system.h>
 
+#include <unistd.h>
+#include <stdlib.h>
+
 #include <stdexcept>
 #include <sys/sysctl.h>
 #include <libproc.h>
