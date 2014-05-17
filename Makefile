@@ -8,7 +8,7 @@
 #    All rights reserved.
 #    
 # --------------------------------------------------------------------------
-#    This file is part of the CommandLine Class Project
+#    This file is part of the crosslib Project.
 #    
 #    This file may be used under the terms of the GNU General Public
 #    License version 2.0 as published by the Free Software Foundation
@@ -28,9 +28,9 @@
 CXX = g++
 OSTYPE = $(shell gcc -dumpmachine)
 APP_DIR = app
-LIBLOCAL_DIR = build/${OSTYPE}/lib/
+EXTLIBRARY_DIR = ext/sys/${OSTYPE}/lib/
 OBJECT_DIR = build/${OSTYPE}/obj/
-LIBRARY_DIR = ext/sys/${OSTYPE}/lib/
+LIBRARY_DIR = build/${OSTYPE}/lib/
 BINARY_DIR  = build/${OSTYPE}/bin/
 INCLUDE_DIR = -Iinclude -Iext/include
 OPTFLAGS = -Os
@@ -46,32 +46,32 @@ endif
 
 ifneq (,$(findstring mingw,$(OSTYPE)))
     OSTYPE = windows
-    LIB =
 else
     ifneq (,$(findstring linux,$(OSTYPE)))
         OSTYPE = linux
-        LIB =
     else
         ifneq (,$(findstring freebsd,$(OSTYPE)))
             OSTYPE = freebsd
-            LIB =
         else
-            ifneq (,$(findstring solaris,$(OSTYPE)))
+            ifneq (,$(findstring pc-solaris,$(OSTYPE)))
                 OSTYPE = openindiana
-                LIB = -R/usr/local/lib:/usr/lib/64:/usr/local/lib/sparcv9
+                #LIB = -R/usr/local/lib:/usr/lib/64:/usr/local/lib/sparcv9
             else
-                ifneq (,$(findstring darwin,$(OSTYPE)))
-                    OSTYPE = macos
-                    LIB =
+                ifneq (,$(findstring solaris,$(OSTYPE)))
+                    OSTYPE = solaris
                 else
-                    $(error Operating System not found)
+                    ifneq (,$(findstring darwin,$(OSTYPE)))
+                        OSTYPE = macos
+                    else
+                        $(error Operating System not found)
+                    endif
                 endif
             endif
         endif
     endif
 endif
 
-vpath % app:src/$(OSTYPE):ext/src
+vpath % app:src/$(OSTYPE)
 
 define compile
     @echo $(subst _$(OSTYPE),,$1)
@@ -80,9 +80,9 @@ endef
 
 all: clean main system
 	@echo Linking...
-	@$(CXX) -o $(BINARY_DIR)$(EXEC) $(OBJECT_DIR)*.o $(LIBRARY_DIR)* $(CFLAGS)
-	@cp $(LIBRARY_DIR)$(LIBNAME) $(LIBLOCAL_DIR)
-	@ar rs  $(LIBLOCAL_DIR)$(LIBNAME) $(OBJECT_DIR)system.o
+	@$(CXX) -o $(BINARY_DIR)$(EXEC) $(OBJECT_DIR)*.o $(EXTLIBRARY_DIR)* $(CFLAGS)
+	@cp $(EXTLIBRARY_DIR)$(LIBNAME) $(LIBRARY_DIR)
+	@ar rs $(LIBRARY_DIR)$(LIBNAME) $(OBJECT_DIR)system.o
 	@strip $(BINARY_DIR)$(EXEC)
 
 main: main.cpp
@@ -98,3 +98,4 @@ clean:
 	@echo Cleaning...
 	@rm -f $(BINARY_DIR)*.exe
 	@rm -f $(OBJECT_DIR)*.o
+	@rm -f $(LIBRARY_DIR)*.a
