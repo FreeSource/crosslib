@@ -45,23 +45,23 @@ else
 endif
 
 ifneq (,$(findstring mingw,$(OSTYPE)))
-    OSTYPE = Windows
+    OSTYPE = windows
     LIB =
 else
     ifneq (,$(findstring linux,$(OSTYPE)))
-        OSTYPE = Linux
+        OSTYPE = linux
         LIB =
     else
         ifneq (,$(findstring freebsd,$(OSTYPE)))
-            OSTYPE = FreeBSD
+            OSTYPE = freebsd
             LIB =
         else
             ifneq (,$(findstring solaris,$(OSTYPE)))
-                OSTYPE = Solaris
+                OSTYPE = openindiana
                 LIB = -R/usr/local/lib:/usr/lib/64:/usr/local/lib/sparcv9
             else
                 ifneq (,$(findstring darwin,$(OSTYPE)))
-                    OSTYPE = MacOSX
+                    OSTYPE = macos
                     LIB =
                 else
                     $(error Operating System not found)
@@ -81,7 +81,8 @@ endef
 all: clean main system
 	@echo Linking...
 	@$(CXX) -o $(BINARY_DIR)$(EXEC) $(OBJECT_DIR)*.o $(LIBRARY_DIR)* $(CFLAGS)
-	@ar rs  $(LIBLOCAL_DIR)$(LIBNAME) $(LIBRARY_DIR)$(LIBNAME) $(OBJECT_DIR)system.o
+	@cp $(LIBRARY_DIR)$(LIBNAME) $(LIBLOCAL_DIR)
+	@ar rs  $(LIBLOCAL_DIR)$(LIBNAME) $(OBJECT_DIR)system.o
 	@strip $(BINARY_DIR)$(EXEC)
 
 main: main.cpp

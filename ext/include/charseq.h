@@ -35,9 +35,10 @@ namespace util {
     using std::string;
     using std::vector;
     
-    const string removeDuplicates( string text, const string &duplicate );
-    const string convertDelimiterToPipe( string text, const string &delimiter );
+    void replaceAll( string &source, const string &find, const string &replace );
     const vector<string> split( string text, const string &delimiter );
-    const string trim( string text );
+    void trim( string &text );
+    const vector<string> wrapText( string text, const size_t &width );
 }
+
 #endif
