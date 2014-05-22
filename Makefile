@@ -71,7 +71,7 @@ else
     endif
 endif
 
-vpath % app:src/$(OSTYPE)
+vpath % app:src:src/$(OSTYPE)
 
 define compile
     @echo $(subst _$(OSTYPE),,$1)
@@ -80,7 +80,7 @@ endef
 
 all: clean main system
 	@echo Linking...
-	@$(CXX) -o $(BINARY_DIR)$(EXEC) $(OBJECT_DIR)*.o $(EXTLIBRARY_DIR)* $(CFLAGS)
+	@$(CXX) -o $(BINARY_DIR)$(EXEC) $(OBJECT_DIR)* $(EXTLIBRARY_DIR)* $(CFLAGS)
 	@cp $(EXTLIBRARY_DIR)$(LIBNAME) $(LIBRARY_DIR)
 	@ar rs $(LIBRARY_DIR)$(LIBNAME) $(OBJECT_DIR)system.o
 	@strip $(BINARY_DIR)$(EXEC)
