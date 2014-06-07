@@ -26,7 +26,7 @@
 # --------------------------------------------------------------------------
 
 CXX = g++
-SYS = windows linux freebsd openindiana solaris macos
+SYS = macos windows linux freebsd openindiana solaris
 OSTYPE = $(shell gcc -dumpmachine)
 APP_DIR = app
 EXTLIBRARY_DIR = ext/lib/
