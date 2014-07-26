@@ -31,6 +31,9 @@
 #include <cstdlib>
 #include <stdexcept>
 
+#include <string>
+#include <vector>
+
 int main() {
     
     using std::cout;
@@ -39,7 +42,13 @@ int main() {
     using namespace crosslib;
     
     try {
-        cout << getExecutablePath() << endl;
+       cout << getExecutablePath() << endl;
+        
+        vector<string> args = getArguments();
+        for ( unsigned i = 0; i < args.size(); ++i ) {
+            std::cout << args.at( i ) << std::endl;
+        }
+        
         return EXIT_SUCCESS;
         
     } catch ( runtime_error &error ) {
