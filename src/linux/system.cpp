@@ -39,9 +39,10 @@ namespace crosslib {
     using std::runtime_error;
     
     const string getExecutablePath() {
-        char path[PATH_MAX];
-        if ( realpath( program_invocation_name, path ) ) {
-            return path;
+        char result[PATH_MAX];
+        ssize_t size = readlink( "/proc/self/exe", result, PATH_MAX );
+        if ( size ) {
+            return result;
         } else {
             throw runtime_error( "FILE: " + string( __FILE__ ) + " FUNCTION: " + string( __PRETTY_FUNCTION__ ) + " -> " + "Can't get process executable path." );
         }
