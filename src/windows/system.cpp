@@ -27,50 +27,47 @@
 
 #include <system.h>
 
-#include <stdexcept>
 #include <windows.h>
 
 namespace crosslib {
     
-    using std::runtime_error;
     using std::wstring;
-
+    
     const string getExecutablePath() {
         char exepath[MAX_PATH];
         int bytes = GetModuleFileName( NULL, exepath, MAX_PATH );
-        
-        if ( bytes > 0 ) {
-            return exepath;
-        } else {
-            throw runtime_error( "FILE: " + string( __FILE__ ) + " FUNCTION: " + string( __PRETTY_FUNCTION__ ) + " -> " + "Can't get process executable path." );
-        }
+        return bytes > 0 ? exepath : "";
     }
-
+    
     const vector<string> getArguments() {
+        vector<string> args;
         LPWSTR *parameterList;
         int parametersNumber = 0;
         parameterList = CommandLineToArgvW( GetCommandLineW(), &parametersNumber );
         
-        if ( parameterList == NULL ) {
-            throw runtime_error( "FILE: " + string( __FILE__ ) + " FUNCTION: " + string( __PRETTY_FUNCTION__ ) + " -> " + "Can't get process arguments." );
+        if ( parameterList != NULL ) {
+            wstring parameter;
+            for ( int index = 1; index < parametersNumber; ++index ) {
+                parameter = parameterList[index];
+                args.push_back( string( parameter.begin(), parameter.end() ) );
+            }
+            LocalFree( parameterList );
         }
-        
-        wstring parameter;
-        vector<string> args;
-        for ( int index = 1; index < parametersNumber; ++index ) {
-            parameter = parameterList[index];
-            args.push_back( string( parameter.begin(), parameter.end() ) );
-        }
-        LocalFree( parameterList );
         return args;
     }
-
+    
     const string getCurrentDirectory() {
         char currentDir[MAX_PATH];
-        if ( GetCurrentDirectory( MAX_PATH, currentDir ) > 0 ) {
-            return currentDir;
-        } else {
-            throw runtime_error( "FILE: " + string( __FILE__ ) + " FUNCTION: " + string( __PRETTY_FUNCTION__ ) + " -> " + "Can't get process current working directory." );
+        return GetCurrentDirectory( MAX_PATH, currentDir ) > 0 ? currentDir : "";
+    }
+    
+    bool fileExists( const string &filename ) {
+        WIN32_FIND_DATA findFileData;
+        HANDLE handle = FindFirstFile( filename.c_str(), &findFileData );
+        bool found = handle != INVALID_HANDLE_VALUE;
+        if ( found ) {
+            FindClose( handle );
         }
+        return found;
     }
 }

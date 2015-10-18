@@ -49,6 +49,8 @@ int main() {
             std::cout << args.at( i ) << std::endl;
         }
         
+        cout << fileExists( "test.txt" ) << endl;
+        
         return EXIT_SUCCESS;
         
     } catch ( runtime_error &error ) {
