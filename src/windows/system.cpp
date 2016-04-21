@@ -61,7 +61,7 @@ namespace crosslib {
         return GetCurrentDirectory( MAX_PATH, currentDir ) > 0 ? currentDir : "";
     }
     
-    bool fileExists( const string &filename ) {
+    const bool fileExists( const string &filename ) {
         WIN32_FIND_DATA findFileData;
         HANDLE handle = FindFirstFile( filename.c_str(), &findFileData );
         bool found = handle != INVALID_HANDLE_VALUE;
