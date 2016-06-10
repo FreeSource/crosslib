@@ -87,6 +87,7 @@ all: clean main system
 	@echo Linking...
 	@$(CXX) -o $(BIN)$(EXEC) $(OBJ)* $(CFLAGS)
 	@strip $(BIN)$(EXEC)
+	@cp $(EXTLIB)$(LIBNAME) $(LIB)
 	@ar -qc $(LIB)$(LIBNAME) $(OBJ)*
 
 main: main.cpp
